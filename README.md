@@ -119,9 +119,6 @@ After running the demo, you will have:
 - output_edge_digit.png – GPU edge-detected output
 Compare the two images to verify your GPU job ran successfully.
 
-<<<<<<< HEAD:README
 ## License
 This project is licensed under the MIT License – see the [LICENSE](LICENSE) file for details.
-=======
-License
->>>>>>> 86b18ac0f9b08be8643ce3891ca91d3b7cd1d350:README.md
+
