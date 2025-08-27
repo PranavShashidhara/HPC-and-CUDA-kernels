@@ -1,0 +1,123 @@
+# Run Your First GPU Job on an HPC Cluster: A Beginner's Guide with Python
+
+This repository contains a step-by-step guide and code to run your first GPU job on an HPC (High Performance Computing) cluster using Python. The demo uses the MNIST dataset and a simple edge-detection convolution to help beginners get familiar with HPC, GPU acceleration, SLURM job scheduling, and file transfers.
+
+---
+
+## Table of Contents
+- [Overview](#overview)  
+- [Requirements](#requirements)  
+- [Installation](#installation)  
+- [Usage](#usage)  
+- [Scripts](#scripts)  
+- [HPC Workflow](#hpc-workflow)  
+- [Results](#results)  
+- [License](#license)  
+
+---
+
+## Overview
+High Performance Computing (HPC) clusters can seem intimidating at first, with GPUs, job schedulers, and command-line interfaces. This project provides a beginner-friendly tutorial for running a Python script on a GPU node. You'll learn how to:
+
+- Login to your HPC cluster  
+- Set up your environment and Python virtual environment  
+- Transfer scripts to the HPC using SFTP  
+- Run Python code with GPU acceleration  
+- Submit and manage jobs with SLURM  
+- Retrieve and verify results locally  
+
+The demo uses a **single MNIST image** for edge detection as a minimal example to ensure everything works before scaling up.
+
+---
+
+## Requirements
+- Access to an HPC cluster with GPU nodes  
+- Python 3.10+  
+- PyTorch, torchvision, Pillow, matplotlib  
+- SLURM or equivalent job scheduler  
+
+Optional:
+- Familiarity with SSH and command-line navigation  
+
+---
+
+## Installation
+1. Clone the repository:  
+```bash
+git clone <repo-url>
+cd my_hpc_project
+```
+## 2. Create and activate a Python virtual environment on the HPC:
+``` bash
+python3 -m venv venv
+source venv/bin/activate
+pip install --upgrade pip
+pip install torch torchvision pillow matplotlib
+```
+## 3. Test locally (on PC)
+Run the Python script locally first:
+```bash
+python HPC_sample_code.py
+```
+- This will:
+- Download a single MNIST digit
+- Apply a GPU-based edge-detection convolution
+- Save `sample_digit.png` and `output_edge_digit.png`
+
+## 4. Transfer to HPC
+Use SFTP to upload files to your HPC cluster: 
+```bash
+sftp username@hpc_address
+cd my_hpc_project
+put -r /path/to/local/project/*
+bye
+```
+
+## Scripts
+
+- HPC_sample_code.py – Python script to download MNIST, apply edge-detection on GPU, and save images.
+- submit.sh – SLURM job script to allocate GPU, CPU, and memory resources for running the Python demo.
+
+## HPC Workflow
+
+### Login to HPC:
+```bash 
+ssh username@hpc_address
+```
+### Explore directories:
+-`~/` – Home directory
+- `/scratch/$USER` – High-speed temporary storage
+
+### Load environment modules:
+``` bash
+module avail
+module load python/3.10
+module load cuda/11.8
+module list
+```
+### Run SLURM job:
+``` bash
+sbatch submit.sh
+```
+### Monitor job:
+``` bash 
+squeue -u $USER
+tail -f HPC_output_<JOB_ID>.log
+```
+### Retrieve output files:
+``` bash 
+sftp username@hpc_address
+get sample_digit.png
+get output_edge_digit.png
+bye
+```
+
+# Results
+
+After running the demo, you will have:
+- sample_digit.png – original MNIST digit
+- output_edge_digit.png – GPU edge-detected output
+Compare the two images to verify your GPU job ran successfully.
+
+## License
+This project is licensed under the MIT License – see the [LICENSE](LICENSE) file for details.
